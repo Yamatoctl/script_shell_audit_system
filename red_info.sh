@@ -7,10 +7,6 @@
 # Date          : 15-05-2026
 # Usage         : ./red_info.sh
 
-# ═══════════════════════════════════════════════════
-#   SYSTEM INTELLIGENCE REPORT - CLASSIFIED
-# ═══════════════════════════════════════════════════
-
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$DIR/lib/ui.sh"
 source "$DIR/lib/system.sh"
@@ -21,12 +17,14 @@ LROUGE='\033[1;31m'
 RESET='\033[0m'
 DATE=$(date +%d-%m-%Y_%H-%M)
 FICHIER_FINAL="rapport-$DATE.txt"
+export NVD_API_KEY
 
 generer_rapport() {
     banner
     user_info
     droit_sudo
     fingerprint
+    cve_check
     network
     user_enum
     suid_sgid
