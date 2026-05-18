@@ -7,6 +7,7 @@ fingerprint() {
     hostnamectl | while read -r line; do
         printf "%s\n" "$line"
     done
+    
     sleep 1  
 
     echo -e "${ROUGE}OS ↓${RESET}"
@@ -37,7 +38,7 @@ network() {
 
     echo -e "${ROUGE}Fichier Hosts ↓${RESET}"
     cat /etc/hosts
-    
+
     sleep 1
 }
 
