@@ -24,27 +24,6 @@ fingerprint() {
     sleep 1
 }
 
-cve_check() {
-    titre "CVE KERNEL CHECK"
-
-    local kernel version result cves
-    kernel=$(uname -r)
-    version=$(echo "$kernel" | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+')
-    info "Kernel →" "$kernel"
-    info "Version extraite →" "$version"
-    if [ -z "$NVD_API_KEY" ]; then
-        echo -e "${LROUGE}[!]${RESET} NVD_API_KEY non définie — CVE check désactivé"
-        return
-    fi
-    echo -e "${ROUGE}Recherche CVE NVD...${RESET}"
-    result=$(curl -4 -s -A "Mozilla/5.0" "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=linux+kernel+$version" 2>/dev/null)
-    cves=$(echo "$result" | grep -o '"CVE-[0-9-]*"' | tr -d '"' | head -n 10)
-    while read -r cve; do
-        echo -e "${LROUGE}[!]${RESET} $cve"
-    done <<< "$cves"
-    sleep 1
-}
-
 network() {
     titre "NETWORK INTELLIGENCE"
 

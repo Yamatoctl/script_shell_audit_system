@@ -23,7 +23,6 @@ generer_rapport() {
     user_info
     droit_sudo
     fingerprint
-    cve_check
     network
     user_enum
     suid_sgid
