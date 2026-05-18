@@ -13,7 +13,6 @@ info() {
 }
 
 banner() {
-    # sleep 2
     echo -e "${LROUGE}"
     cat << 'BANNER'
 ██████╗ ███████╗██████╗     ██╗███╗   ██╗███████╗ ██████╗ 
@@ -29,6 +28,7 @@ BANNER
     echo -e " Generated : $(date)"
     echo -e " Operator  : $(whoami)@$(hostname)"
     separateur
+
     sleep 1
 }
 
@@ -36,6 +36,7 @@ fin() {
     echo -e ""; separateur
     echo -e "${LROUGE}[✓] RAPPORT TERMINÉ${RESET} — $(date '+%H:%M:%S')"
     separateur
+
     sleep 2
 }
 

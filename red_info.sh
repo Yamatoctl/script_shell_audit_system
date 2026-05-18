@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# Nom           : red_info.sh
+# Description   : Script de reconnaissance et d'énumération système
+# Auteur        : Yamatoctl
+# Version       : 1.0
+# Date          : 15-05-2026
+# Usage         : ./red_info.sh
+
 # ═══════════════════════════════════════════════════
 #   SYSTEM INTELLIGENCE REPORT - CLASSIFIED
 # ═══════════════════════════════════════════════════
@@ -30,6 +37,7 @@ generer_rapport() {
 
 banner
 start_time=$(date +%s)
+
 touch "$FICHIER_FINAL" 2>/dev/null || {
     echo -e "${LROUGE}[!]${RESET} Impossible d'écrire dans $FICHIER_FINAL"
     exit 1

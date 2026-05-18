@@ -41,8 +41,10 @@ droit_sudo() {
 
 user_enum() {
     titre "USER ENUMERATION"
+
     echo -e "${ROUGE}Utilisateurs ↓${RESET}"
     cut -d: -f1 /etc/passwd
+
     echo -e "${ROUGE}Fichier /etc/shadow ↓${RESET}"
     local SHADOW
     SHADOW=$(cat /etc/shadow 2>/dev/null)
@@ -57,8 +59,9 @@ user_enum() {
 }
 
 suid_sgid() {
-    titre "SUID / SGID FILES"
-    echo -e "${ROUGE}Fichiers SUID :${RESET}"
+    titre "Fichier suid/sgid"
+
+    echo -e "${ROUGE}Fichiers SUID ↓${RESET}"
     local SUID
     SUID=$(find / -mount -perm -4000 -type f \
         ! -path "/proc/*" \
@@ -68,6 +71,7 @@ suid_sgid() {
     while read -r f; do
         echo -e "${LROUGE}[!]${RESET} $f"
     done <<< "$SUID"
+
     echo -e "\n  ${ROUGE}Fichiers SGID :${RESET}"
     local SGID
     SGID=$(find / -mount -perm -2000 -type f \
@@ -78,19 +82,21 @@ suid_sgid() {
     while read -r f; do
         echo -e "${LROUGE}[!]${RESET} $f"
     done <<< "$SGID"
+
     sleep 1
 }
 
 taches() {
     titre "TACHES PLANIFIEES"
 
-    echo -e "${ROUGE}Crontab système ↓${RESET}"
-    
+    echo -e "${ROUGE}Crontab système ↓${RESET}"    
     while read -r line; do
         printf "%s\n" "$line"
     done < /etc/crontab 2>/dev/null
+
     echo -e "${ROUGE}Cron.d & cron.* ↓${RESET}"
     ls -la /etc/cron* 2>/dev/null
+
     echo -e "${ROUGE}Crontab utilisateur ↓${RESET}"
     local CRONTAB
     CRONTAB=$(crontab -l 2>/dev/null)
@@ -99,6 +105,7 @@ taches() {
     else
         echo "$CRONTAB"
     fi
+
     echo -e "${ROUGE}Crontabs tous utilisateurs ↓${RESET}"
     local SPOOL
     SPOOL=$(ls -la /var/spool/cron/crontabs 2>/dev/null)
@@ -107,5 +114,6 @@ taches() {
     else
         echo "$SPOOL"
     fi
+    
     sleep 1
 }

@@ -1,6 +1,6 @@
-# 🔴 Red Info — System Intelligence Report
+# Red Info — Audit System  
 
-> Script bash de reconnaissance et d'énumération système automatisé, conçu pour l'audit de sécurité et le pentest.
+> Script bash de reconnaissance et d'énumération système automatisé, conçu pour l'audit de sécurité.
 
 ---
 
@@ -38,8 +38,6 @@ red-info/
 - Bash 4+
 - Linux uniquement
 - Commandes requises : `ip`, `ss`, `hostnamectl`, `find`, `sudo`, `cut`, `awk`, `grep`
-
-Le script vérifie automatiquement la présence de ces commandes au démarrage et s'arrête si l'une d'elles est manquante.
 
 ---
 

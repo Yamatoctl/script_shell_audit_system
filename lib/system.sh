@@ -2,6 +2,7 @@
 
 fingerprint() {
     titre "SYSTEM FINGERPRINT"
+
     echo -e "${ROUGE}hostname ↓${RESET}"
     hostnamectl | while read -r line; do
         printf "%s\n" "$line"
@@ -18,6 +19,7 @@ fingerprint() {
 
     echo -e "${ROUGE}Date ↓${RESET}"
     date
+
     sleep 1
 }
 
@@ -35,11 +37,13 @@ network() {
 
     echo -e "${ROUGE}Fichier Hosts ↓${RESET}"
     cat /etc/hosts
+    
     sleep 1
 }
 
 ressources() {
     titre "SYSTEM RESOURCES"
+
     echo -e "${ROUGE}Espace disque :${RESET}"; df -h /
     echo -e "${ROUGE}Mémoire :${RESET}"; free -h
 }
