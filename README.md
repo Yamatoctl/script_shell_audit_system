@@ -1,35 +1,18 @@
 # Red Info — System Intelligence Report
 
-Script bash de reconnaissance et d'énumération système orienté pentest.
+> Script de reconnaissance système automatisé, conçu pour l'audit.
 
-## Fonctionnalités
+## Usage
 
-- Identité & privilèges
-- Droits sudo
-- Fingerprint système
-- Réseau & ports
-- Énumération utilisateurs & shadow
-- Fichiers SUID/SGID
-- Tâches planifiées
-- Ressources système
-
-## Structure
-
-projet/
-├── red_info.sh
-├── README.md
-└── lib/
-    ├── ui.sh
-    ├── system.sh
-    └── privesc.sh
-
-## Utilisation
-
+```bash
 chmod +x red_info.sh
 ./red_info.sh
+```
 
-Le rapport est généré dans : rapport-DD-MM-YYYY_HH-MM.txt
+## Rapport généré
 
-## Avertissement
+`rapport-DD-MM-YYYY_HH-MM.txt`
 
-À utiliser uniquement sur des systèmes dont vous avez l'autorisation.
+## Disclaimer
+
+Usage strictement réservé à des environnements autorisés.
