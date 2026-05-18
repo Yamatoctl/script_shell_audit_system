@@ -17,7 +17,6 @@ LROUGE='\033[1;31m'
 RESET='\033[0m'
 DATE=$(date +%d-%m-%Y_%H-%M)
 FICHIER_FINAL="rapport-$DATE.txt"
-export NVD_API_KEY
 
 generer_rapport() {
     banner

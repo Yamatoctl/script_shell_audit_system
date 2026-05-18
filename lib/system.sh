@@ -26,6 +26,7 @@ fingerprint() {
 
 cve_check() {
     titre "CVE KERNEL CHECK"
+
     local kernel version result cves
     kernel=$(uname -r)
     version=$(echo "$kernel" | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+')
@@ -36,14 +37,8 @@ cve_check() {
         return
     fi
     echo -e "${ROUGE}Recherche CVE NVD...${RESET}"
-    result=$(curl -4 -s -A "Mozilla/5.0" \
-        "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=linux+kernel+$version&apiKey=$NVD_API_KEY" \
-        2>/dev/null)
-    if [ -z "$result" ]; then
-        echo -e "${LROUGE}[!]${RESET} Impossible de joindre l'API NVD"
-        return
-    fi
-    cves=$(echo "$result" | grep -o '"CVE-[0-9-]*"' | head -n 10)
+    result=$(curl -4 -s -A "Mozilla/5.0" "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=linux+kernel+$version" 2>/dev/null)
+    cves=$(echo "$result" | grep -o '"CVE-[0-9-]*"' | tr -d '"' | head -n 10)
     while read -r cve; do
         echo -e "${LROUGE}[!]${RESET} $cve"
     done <<< "$cves"
