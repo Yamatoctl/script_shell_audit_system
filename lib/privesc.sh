@@ -1,12 +1,35 @@
 #!/usr/bin/env bash
 
+#info generale user
 user_info() {
     titre   "IDENTITY & PRIVILEGES"
 
-    info    "Utilisateur →"   "$(whoami)"   
-    info    "ID →"            "$(id)"
-    info    "Groupes →"       "$(groups)" 
-    info    "Repertoire →"    "$(pwd)"
+    info    "Utilisateur →"         "$(whoami)"   
+    info    "ID →"                  "$(id)"
+    info    "Groupes →"             "$(groups)" 
+    info    "Repertoire →"          "$(pwd)"
+    info    "Sessions actives ↓"    "$(echo -e "\n$(w)")"
+}
+
+# clés SSH et fichiers sensibles
+key_ssh() {
+    echo -e "${ROUGE}Clés SSH et fichiers sensibles ↓${RESET}"
+    key1=$(find / -mount \
+        ! -path "/opt/metasploit-framework/*" \
+        \( \
+            -name "id_rsa*" \
+            -o -name "id_dsa*" \
+            -o -name "authorized_keys" \
+            -o -name "authorized_hosts" \
+            -o -name "known_hosts" \
+        \) -exec ls -la {} 2>/dev/null \;)
+    if [ -z "$key1" ]; then
+        printf "Aucune clé trouvée\n"
+    else
+        while read -r line; do
+            printf "%s\n" "$line"
+        done <<< "$key1"
+    fi
 }
 
 droit_sudo() {

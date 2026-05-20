@@ -21,6 +21,7 @@ FICHIER_FINAL="rapport-$DATE.txt"
 generer_rapport() {
     banner
     user_info
+    key_ssh
     droit_sudo
     fingerprint
     network
