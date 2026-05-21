@@ -11,9 +11,21 @@ user_info() {
     info    "Sessions actives ↓"    "$(echo -e "\n$(w)")"
 }
 
+password_policy() {
+    echo -e "\n${ROUGE}Politique de mots de passe ↓${RESET}"
+    logindefs=$(grep "^PASS_MAX_DAYS\|^PASS_MIN_DAYS\|^PASS_WARN_AGE\|^ENCRYPT_METHOD" /etc/login.defs 2>/dev/null)
+    if [ -z "$logindefs" ]; then
+        printf "Aucune politique trouvée\n"
+    else
+        while read -r line; do
+            printf "%s\n" "$line"
+        done <<< "$logindefs"
+    fi
+}
+
 # clés SSH et fichiers sensibles
 key_ssh() {
-    echo -e "${ROUGE}Clés SSH et fichiers sensibles ↓${RESET}"
+    echo -e "\n${ROUGE}Clés SSH et fichiers sensibles ↓${RESET}"
     key1=$(find / -mount \
         ! -path "/opt/metasploit-framework/*" \
         \( \
@@ -46,8 +58,10 @@ droit_sudo() {
     if [ "$exit_code" -eq 0 ]; then
         output=$(LANG=C sudo -n -l 2>/dev/null)
         if echo "$output" | grep -q "NOPASSWD"; then
+            echo
             info "Droits sudo →" "Sudo sans mot de passe (NOPASSWD) configuré"
         else
+            echo
             info "Droits sudo →" "Sudo configuré (session déjà authentifiée)"
         fi
         while read -r line; do
@@ -55,11 +69,22 @@ droit_sudo() {
             echo -e "${LROUGE}[!]${RESET} $line"
         done <<< "$output"
     elif id -nG 2>/dev/null | grep -qE '\bsudo\b|\bwheel\b|\badm\b'; then
+        echo
         info "Droits sudo →" "Sudo nécessite un mot de passe"
     else
+        echo
         info "Droits sudo →" "Aucun droit sudo détecté"
     fi
+
     sleep 1
+    
+    sudover=$(sudo -V 2>/dev/null | grep "Sudo version" 2>/dev/null)
+    if [ -n "$sudover" ]; then
+        info "Version sudo →" "$sudover"
+    else
+        printf "Sudo non disponible\n"
+    fi
+
 }
 
 user_enum() {
@@ -68,7 +93,7 @@ user_enum() {
     echo -e "${ROUGE}Utilisateurs ↓${RESET}"
     cut -d: -f1 /etc/passwd
 
-    echo -e "${ROUGE}Fichier /etc/shadow ↓${RESET}"
+    echo -e "\n${ROUGE}Fichier /etc/shadow ↓${RESET}"
     local SHADOW
     SHADOW=$(cat /etc/shadow 2>/dev/null)
     if [ -n "$SHADOW" ]; then
@@ -117,10 +142,10 @@ taches() {
         printf "%s\n" "$line"
     done < /etc/crontab 2>/dev/null
 
-    echo -e "${ROUGE}Cron.d & cron.* ↓${RESET}"
+    echo -e "\n${ROUGE}Cron.d & cron.* ↓${RESET}"
     ls -la /etc/cron* 2>/dev/null
 
-    echo -e "${ROUGE}Crontab utilisateur ↓${RESET}"
+    echo -e "\n${ROUGE}Crontab utilisateur ↓${RESET}"
     local CRONTAB
     CRONTAB=$(crontab -l 2>/dev/null)
     if [ -z "$CRONTAB" ]; then
@@ -129,7 +154,7 @@ taches() {
         echo "$CRONTAB"
     fi
 
-    echo -e "${ROUGE}Crontabs tous utilisateurs ↓${RESET}"
+    echo -e "\n${ROUGE}Crontabs tous utilisateurs ↓${RESET}"
     local SPOOL
     SPOOL=$(ls -la /var/spool/cron/crontabs 2>/dev/null)
     if [ -z "$SPOOL" ]; then

@@ -42,14 +42,31 @@ fin() {
 
 spinner() {
     local pid=$1
-    local frames='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+    local frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+    local messages=(
+        "Extraction des identités..."
+        "Analyse des privilèges..."
+        "Recherche de clés SSH..."
+        "Enumération des utilisateurs..."
+        "Scan des fichiers SUID/SGID..."
+        "Lecture des tâches planifiées..."
+        "Cartographie du réseau..."
+        "Collecte des ressources système..."
+    )
     local i=0
+    local m=0
+    local msg_counter=0
 
     while kill -0 "$pid" 2>/dev/null; do
-        printf "\r${LROUGE}%s scan en cours...${RESET}" "${frames:$(( i % ${#frames} )):1}"
+        local frame=${frames[$((i % ${#frames[@]}))]}
+        local msg=${messages[$((m % ${#messages[@]}))]}
+        printf "\r  ${LROUGE}%s${RESET} ${ROUGE}%-45s${RESET}" "$frame" "$msg" 
         sleep 0.1
-        (( i++ ))
+        ((i++))
+        ((msg_counter++))
+        if (( msg_counter % 20 == 0 )); then
+            ((m++))
+        fi
     done
-
-    printf "\r                          \r"
+    printf "\r%-60s\r" " " 
 }

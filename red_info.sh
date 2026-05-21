@@ -21,6 +21,7 @@ FICHIER_FINAL="rapport-$DATE.txt"
 generer_rapport() {
     banner
     user_info
+    password_policy
     key_ssh
     droit_sudo
     fingerprint
@@ -35,16 +36,15 @@ generer_rapport() {
 banner
 start_time=$(date +%s)
 
-touch "$FICHIER_FINAL" 2>/dev/null || {
-    echo -e "${LROUGE}[!]${RESET} Impossible d'écrire dans $FICHIER_FINAL"
-    exit 1
-}
-generer_rapport > "$FICHIER_FINAL" 2>&1 &
+FICHIER_FINAL="rapport-$DATE"
+generer_rapport 2>&1 | tee >(aha --black > "${FICHIER_FINAL}.html") > "${FICHIER_FINAL}.txt" &
 pid=$!
 spinner "$pid"
-wait $pid
+wait "$pid"
 end_time=$(date +%s)
 duree=$(( end_time - start_time ))
 sync
 echo -e "${LROUGE}[✓] SYSTÈME DÉCRYPTÉ EN ${duree}s${RESET}"
-echo -e "  └─ Rapport généré : $FICHIER_FINAL"
+echo -e "  └─ Rapport TXT  : ${FICHIER_FINAL}.txt"
+echo -e "  └─ Rapport HTML : ${FICHIER_FINAL}.html"
+xdg-open "${FICHIER_FINAL}.html"
